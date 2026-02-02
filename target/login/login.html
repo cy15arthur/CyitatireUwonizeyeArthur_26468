@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login Page</title>
+    <style>
+        :root{--bg:#f8fafc;--card:#ffffff;--accent:#4f46e5;--muted:#6b7280}
+        html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:linear-gradient(135deg,#eef2ff,#f8fafc)}
+        body{display:flex;align-items:center;justify-content:center;padding:24px}
+        .login-container{width:100%;max-width:420px;background:var(--card);padding:28px;border-radius:12px;box-shadow:0 6px 20px rgba(31,41,55,0.08)}
+        .login-container h2{margin:0 0 12px;font-size:20px;color:#111827}
+        form label{display:block;margin-top:12px;font-size:14px;color:var(--muted)}
+        form input[type="text"],form input[type="password"]{width:100%;padding:10px 12px;margin-top:6px;border:1px solid #e5e7eb;border-radius:8px;font-size:15px;box-sizing:border-box}
+        input[type="submit"]{margin-top:18px;width:100%;background:var(--accent);color:#fff;padding:10px 12px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:background .15s}
+        input[type="submit"]:hover{background:#4338ca}
+        input:focus{outline:none;box-shadow:0 0 0 3px rgba(79,70,229,0.12);border-color:#c7b5ff}
+        @media (max-width:420px){.login-container{padding:20px;border-radius:10px}.login-container h2{font-size:18px}}
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="login" method="POST">
+            <label for="user">Username:</label>
+            <input type="text" id="user" name="user" required>
+
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass" required>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <!-- Popup for errors -->
+    <div id="popup" aria-hidden="true" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(2,6,23,0.5);z-index:60">
+        <div style="background:white;padding:20px;border-radius:10px;max-width:380px;width:90%;box-shadow:0 10px 30px rgba(2,6,23,0.2);text-align:center">
+            <h3 id="popup-title" style="margin:0 0 8px;color:#111827">Notice</h3>
+            <p id="popup-msg" style="margin:0 0 16px;color:#374151">Message</p>
+            <button id="popup-close" style="padding:8px 12px;border-radius:8px;background:#4b5563;color:#fff;border:none;cursor:pointer">OK</button>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            const params = new URLSearchParams(location.search);
+            const err = params.get('error');
+            const user = params.get('user');
+            if (user) {
+                try { document.getElementById('user').value = decodeURIComponent(user.replace(/\+/g,' ')); } catch(e) { }
+            }
+            if (err === 'weak') {
+                const popup = document.getElementById('popup');
+                document.getElementById('popup-title').textContent = 'Weak password';
+                document.getElementById('popup-msg').textContent = 'Your password is too short. Use at least 8 characters.';
+                popup.style.display = 'flex';
+                popup.setAttribute('aria-hidden','false');
+                document.getElementById('popup-close').focus();
+                document.getElementById('popup-close').addEventListener('click', function(){
+                    // Remove the error param from the URL without reloading
+                    params.delete('error'); params.delete('user');
+                    const newUrl = location.pathname + (params.toString() ? ('?' + params.toString()) : '');
+                    history.replaceState(null,'',newUrl);
+                    popup.style.display='none';
+                    popup.setAttribute('aria-hidden','true');
+                });
+            }
+        })();
+    </script>
+
+</body>
+</html>
