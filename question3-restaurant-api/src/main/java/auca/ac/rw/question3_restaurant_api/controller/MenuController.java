@@ -18,7 +18,6 @@ import auca.ac.rw.question3_restaurant_api.model.MenuItem;
 @RequestMapping("/api/menu")
 public class MenuController {
      List<MenuItem> menuItems = new ArrayList<>();
-
     public MenuController() {
         menuItems.add(new MenuItem(1L, "Spring Rolls", "Vegetable crispy rolls", 5.0, "Appetizer", true));
         menuItems.add(new MenuItem(2L, "Grilled Salmon", "Salmon with lemon butter", 22.0, "Main Course", true));
@@ -33,24 +32,24 @@ public class MenuController {
     }
 
     @GetMapping("/{itemId}")
-    public MenuItem getMenuItemById(@PathVariable Long itemId) {
-        for (MenuItem item : menuItems) {
-            if (item.getItemId().equals(itemId)) return item;
+    public MenuItem getMenuitemById(@PathVariable Long itemId) {
+        for (MenuItem tempitem : menuItems) {
+            if (tempitem.getItemId().equals(itemId)) return tempitem;
         }
         return null;
     }
 
     @GetMapping("/category/{category}")
-    public List<MenuItem> getMenuItemsByCategory(@PathVariable String category) {
+    public List<MenuItem> getMenuitemsBycategory(@PathVariable String category) {
         List<MenuItem> results = new ArrayList<>();
-        for (MenuItem item : menuItems) {
-            if (item.getCategory().equalsIgnoreCase(category)) results.add(item);
+        for (MenuItem tempitem : menuItems) {
+        if (tempitem.getCategory().equalsIgnoreCase(category)) results.add(tempitem);
         }
         return results;
     }
 
     @PostMapping
-    public MenuItem addMenuItem(@RequestBody MenuItem newItem) {
+    public MenuItem addMenuitem(@RequestBody MenuItem newItem) {
         menuItems.add(newItem);
         return newItem;
     }
@@ -65,23 +64,23 @@ public class MenuController {
                 item.setCategory(updatedItem.getCategory());
                 item.setIsAvailable(updatedItem.getIsAvailable());
                 return item;
-            }
-        }
+                }
+          }
         return null;
     }
 
     @DeleteMapping("/{itemId}")
-    public String deleteMenuItem(@PathVariable Long itemId) {
+    public String deletemenuItem(@PathVariable Long itemid) {
         MenuItem toRemove = null;
         for (MenuItem item : menuItems) {
-            if (item.getItemId().equals(itemId)) {
+            if (item.getItemId().equals(itemid)) {
                 toRemove = item;
                 break;
-            }
+               }
         }
         if (toRemove != null) {
             menuItems.remove(toRemove);
-            return "Item deleted successfully";
+            return "Item has been deleted successfully";
         }
         return "Item not found";
     }
