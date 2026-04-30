@@ -1,0 +1,34 @@
+# ---- Spring Boot ----
+# Compiled output
+target/
+
+# Sensitive config (DB credentials)
+webtech-quiz/src/main/resources/application.properties
+
+# Maven wrapper jar
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+*.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test scripts
+*.bat
+
+# ---- React / Node ----
+webtechquiz-frontend/node_modules/
+webtechquiz-frontend/dist/
+webtechquiz-frontend/.env
+webtechquiz-frontend/.env.local
+
+# Logs
+*.log
+npm-debug.log*
